@@ -49,6 +49,7 @@ val allActionSelectionItems = listOf(
     ActionSelectionItem("clipboard", R.string.action_clipboard, EdgeXIcons.Clipboard),
     ActionSelectionItem("universal_copy", R.string.action_universal_copy, EdgeXIcons.UniversalCopy),
     ActionSelectionItem("lock_screen", R.string.action_lock_screen, EdgeXIcons.Lock),
+    ActionSelectionItem("open_menu", R.string.action_open_menu, EdgeXIcons.More),
     ActionSelectionItem("kill_app", R.string.action_kill_app, EdgeXIcons.KillApp),
     ActionSelectionItem("prev_app", R.string.action_prev_app, EdgeXIcons.PrevApp),
     ActionSelectionItem("next_app", R.string.action_next_app, EdgeXIcons.NextApp),

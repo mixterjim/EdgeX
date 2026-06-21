@@ -162,6 +162,7 @@
     <string name="action_clipboard">剪切板</string>
     <string name="action_universal_copy">全局复制</string>
     <string name="action_lock_screen">锁定屏幕</string>
+    <string name="action_open_menu">打开菜单</string>
     <string name="action_kill_app">结束当前应用</string>
     <string name="action_prev_app">上一个应用</string>
     <string name="action_next_app">下一个应用</string>

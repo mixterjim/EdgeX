@@ -34,6 +34,7 @@ object AppActionExecutor {
         code == "home" -> { launchHome(context); true }
         code == "recents" || code == "recent" -> { toggleRecents(context); true }
         code == "expand_notifications" || code == "notifications" -> { expandNotifications(context); true }
+        code == "open_menu" -> { injectMenuKey(context); true }
         code.startsWith("launch_app:") -> { launchApp(context, code); true }
         code.startsWith("app_shortcut:") -> { launchShortcut(context, code); true }
         code.startsWith("shell:") -> { executeShell(context, code); true }
@@ -179,5 +180,17 @@ object AppActionExecutor {
             val la = context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as android.content.pm.LauncherApps
             la.startShortcut(parts[1], parts[2], null, null, android.os.Process.myUserHandle())
         }
+    }
+
+    fun injectMenuKey(context: Context) {
+        val now = SystemClock.uptimeMillis()
+        val down = KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MENU, 0)
+        val up = KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MENU, 0)
+        try {
+            val im = context.getSystemService(Context.INPUT_SERVICE)
+            val method = im.javaClass.getMethod("injectInputEvent", android.view.InputEvent::class.java, Int::class.javaPrimitiveType)
+            method.invoke(im, down, 0)
+            method.invoke(im, up, 0)
+        } catch (_: Throwable) {}
     }
 }
