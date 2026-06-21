@@ -117,6 +117,7 @@ internal class GestureActionDispatcher(
         context: Context,
         touchX: Float,
         touchY: Float,
+        withVibration: Boolean = true,
     ) {
         val configKey = AppConfig.gestureAction(zone, gestureType)
         var action = resolveConfig(configKey)
@@ -135,7 +136,8 @@ internal class GestureActionDispatcher(
         log("[Gesture] triggerAction key=$configKey action='$action'")
         if (action.isNotEmpty() && action != "none") {
             handlerProvider().post {
-                performAction(action, context, touchX, touchY)
+                if (withVibration) vibrateActionFeedback(context)
+                dispatchAction(action, context, touchX, touchY)
             }
         }
     }
@@ -154,6 +156,8 @@ internal class GestureActionDispatcher(
 
     private fun injectMenuKey(context: Context) =
         com.fan.edgex.action.AppActionExecutor.injectMenuKey(context)
+
+    fun notifySwipeRecognized(context: Context) = vibrateActionFeedback(context)
 
     private fun vibrateActionFeedback(context: Context) {
         if (resolveConfig(AppConfig.HAPTIC_FEEDBACK) != "true") return
