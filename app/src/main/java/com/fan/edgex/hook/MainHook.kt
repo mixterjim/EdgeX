@@ -102,6 +102,41 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit {
                 XposedBridge.log("$TAG: interceptKeyBeforeDispatching hook failed: ${t.message}")
             }
 
+            // Hook interceptKeyBeforeQueueing for virtual navigation key interception.
+            // Virtual keys (BACK, HOME, APP_SWITCH) may be consumed by the system at this
+            // stage before reaching interceptKeyBeforeDispatching. Only active in 3-button
+            // navigation mode.
+            try {
+                XposedHelpers.findAndHookMethod(
+                    inputManagerService, "interceptKeyBeforeQueueing",
+                    KeyEvent::class.java,
+                    Int::class.javaPrimitiveType,
+                    object : XC_MethodHook() {
+                        override fun beforeHookedMethod(param: MethodHookParam) {
+                            if (isCalledByUs()) return
+
+                            val event = param.args[0] as KeyEvent
+                            val keyCode = event.keyCode
+
+                            if (keyCode != KeyEvent.KEYCODE_BACK &&
+                                keyCode != KeyEvent.KEYCODE_HOME &&
+                                keyCode != KeyEvent.KEYCODE_APP_SWITCH) {
+                                return
+                            }
+
+                            val policyFlags = param.args[1] as Int
+                            val context = XposedHelpers.getObjectField(param.thisObject, "mContext") as android.content.Context
+
+                            if (GestureManager.handleKeyEventBeforeQueueing(event, context, param, policyFlags)) {
+                                param.result = 0
+                            }
+                        }
+                    }
+                )
+            } catch (t: Throwable) {
+                XposedBridge.log("$TAG: interceptKeyBeforeQueueing hook failed: ${t.message}")
+            }
+
             // 2) Hook filterInputEvent to intercept touch and key events
             val hook = object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {

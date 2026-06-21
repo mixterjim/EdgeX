@@ -104,11 +104,19 @@ private data class KeyTrigger(
     val labelRes: Int,
 )
 
-private val keyItems = listOf(
+private val keyItemsHardware = listOf(
     KeyUiItem(KeyEvent.KEYCODE_VOLUME_UP, R.string.key_volume_up, EdgeXIcons.VolumeUp),
     KeyUiItem(KeyEvent.KEYCODE_VOLUME_DOWN, R.string.key_volume_down, EdgeXIcons.VolumeDown),
     KeyUiItem(KeyEvent.KEYCODE_POWER, R.string.key_power, EdgeXIcons.Power),
 )
+
+private val keyItemsNav = listOf(
+    KeyUiItem(KeyEvent.KEYCODE_BACK, R.string.key_back, EdgeXIcons.Back),
+    KeyUiItem(KeyEvent.KEYCODE_HOME, R.string.key_home, EdgeXIcons.Home),
+    KeyUiItem(KeyEvent.KEYCODE_APP_SWITCH, R.string.key_app_switch, EdgeXIcons.Recents),
+)
+
+private val keyItems = keyItemsHardware + keyItemsNav
 
 private val keyTriggers = listOf(
     KeyTrigger("click", R.string.gesture_click),
@@ -165,7 +173,7 @@ fun KeysScreen(
         }
         KeySectionLabel(stringResource(R.string.compose_key_mapping))
         EdgeXListGroup(modifier = Modifier.padding(horizontal = 16.dp)) {
-            keyItems.forEachIndexed { index, item ->
+            keyItemsHardware.forEachIndexed { index, item ->
                 val keyEnabled = context.keyEnabledState(item.keyCode, refreshTick)
                 val statusLabel = stringResource(if (keyEnabled) R.string.compose_enabled else R.string.compose_disabled)
                 EdgeXRow(
@@ -179,7 +187,26 @@ fun KeysScreen(
                         onCheckedChange = { setKeyEnabled(item, it) },
                     )
                 }
-                if (index != keyItems.lastIndex) EdgeXDivider()
+                if (index != keyItemsHardware.lastIndex) EdgeXDivider()
+            }
+        }
+        KeySectionLabel(stringResource(R.string.compose_key_mapping_nav))
+        EdgeXListGroup(modifier = Modifier.padding(horizontal = 16.dp)) {
+            keyItemsNav.forEachIndexed { index, item ->
+                val keyEnabled = context.keyEnabledState(item.keyCode, refreshTick)
+                val statusLabel = stringResource(if (keyEnabled) R.string.compose_enabled else R.string.compose_disabled)
+                EdgeXRow(
+                    title = stringResource(item.titleRes),
+                    subtitle = "$statusLabel · ${context.keySubtitle(item.keyCode, refreshTick)}",
+                    icon = item.icon,
+                    onClick = { selectedKey = item },
+                ) {
+                    EdgeXSwitch(
+                        checked = keyEnabled,
+                        onCheckedChange = { setKeyEnabled(item, it) },
+                    )
+                }
+                if (index != keyItemsNav.lastIndex) EdgeXDivider()
             }
         }
     }

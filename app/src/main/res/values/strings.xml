@@ -454,7 +454,7 @@
     <string name="header_keys">Keys</string>
     <string name="header_key_detail">Configure Key</string>
     <string name="keys_global_switch">Enable Key Actions</string>
-    <string name="keys_global_switch_desc">Intercept hardware keys to trigger actions</string>
+    <string name="keys_global_switch_desc">Intercept  keys to trigger actions</string>
     <string name="key_enabled">Enable this key</string>
     <string name="key_not_configured">Not configured</string>
     <string name="key_volume_up">Volume Up</string>
@@ -540,7 +540,7 @@
     <string name="compose_freeze_failed">Freeze failed</string>
     <string name="compose_unfreeze_failed">Unfreeze failed</string>
     <string name="compose_no_matching_apps">No matching apps</string>
-    <string name="compose_keys_hero">Hardware Keys\nBecome Shortcuts</string>
+    <string name="compose_keys_hero">Keys\nBecome Shortcuts</string>
     <string name="compose_key_mapping">Key Mapping</string>
     <string name="compose_keys_enabled_toast">Keys enabled</string>
     <string name="compose_keys_disabled_toast">Keys disabled</string>
@@ -621,4 +621,5 @@
     <string name="action_cat_advanced">Advanced</string>
     <string name="action_cat_apps">Apps &amp; Tools</string>
     <string name="compose_action_needs_config">Configure</string>
+    <string name="compose_key_mapping_nav">Navigation Keys</string>
 </resources>
