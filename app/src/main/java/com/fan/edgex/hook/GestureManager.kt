@@ -325,6 +325,7 @@ object GestureManager {
         }
         if (initializeKeys && !keyManagerInitialized) {
             KeyManager.init(context)
+            KeyManager.updateNavigationMode(context)
             keyManagerInitialized = true
         }
     }
@@ -537,6 +538,18 @@ object GestureManager {
 
         if (GameModeManager.isActive) return false
         return KeyManager.handleKeyEvent(event, context, hookParam, policyFlags)
+    }
+
+    /**
+     * Called from system_server (interceptKeyBeforeQueueing hook) for virtual navigation keys.
+     * Only active in 3-button navigation mode.
+     */
+    fun handleKeyEventBeforeQueueing(event: KeyEvent, context: Context, hookParam: de.robv.android.xposed.XC_MethodHook.MethodHookParam, policyFlags: Int): Boolean {
+        ensureSystemServerInitialized(context, initializeKeys = true)
+
+        if (GameModeManager.isActive) return false
+        KeyManager.updateNavigationMode(context)
+        return KeyManager.handleKeyEventBeforeQueueing(event, context, hookParam, policyFlags)
     }
 
     fun executeKeyAction(action: String, context: Context) {

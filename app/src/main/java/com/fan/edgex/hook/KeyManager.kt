@@ -3,6 +3,7 @@ package com.fan.edgex.hook
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.view.KeyEvent
 import android.view.ViewConfiguration
 import com.fan.edgex.config.AppConfig
@@ -35,7 +36,10 @@ object KeyManager {
     val SUPPORTED_KEYS = mapOf(
         KeyEvent.KEYCODE_VOLUME_UP to 0,
         KeyEvent.KEYCODE_VOLUME_DOWN to 1,
-        KeyEvent.KEYCODE_POWER to 2
+        KeyEvent.KEYCODE_POWER to 2,
+        KeyEvent.KEYCODE_BACK to 3,
+        KeyEvent.KEYCODE_HOME to 4,
+        KeyEvent.KEYCODE_APP_SWITCH to 5
     )
 
     // State machine states
@@ -71,6 +75,24 @@ object KeyManager {
 
     private fun isVolumeKey(keyCode: Int): Boolean {
         return keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN
+    }
+
+    // Virtual navigation keys (3-button navigation bar)
+    private val VIRTUAL_NAV_KEYS = setOf(
+        KeyEvent.KEYCODE_BACK,
+        KeyEvent.KEYCODE_HOME,
+        KeyEvent.KEYCODE_APP_SWITCH
+    )
+
+    private var isThreeButtonNavMode = true
+
+    fun updateNavigationMode(context: Context) {
+        try {
+            val mode = Settings.Secure.getInt(context.contentResolver, "navigation_mode", 0)
+            isThreeButtonNavMode = (mode == 0)
+        } catch (_: Exception) {
+            isThreeButtonNavMode = true
+        }
     }
 
     // Timeouts
@@ -270,6 +292,40 @@ object KeyManager {
             volumePassthroughUntil = System.currentTimeMillis() + VOLUME_PASSTHROUGH_DURATION
             return false
         }
+
+        return when (event.action) {
+            KeyEvent.ACTION_DOWN -> handleKeyDown(keyCode, event, context, param)
+            KeyEvent.ACTION_UP -> handleKeyUp(keyCode, event, context, param)
+            else -> false
+        }
+    }
+
+    /**
+     * Handle key event from interceptKeyBeforeQueueing hook.
+     * Used for virtual navigation keys (BACK, HOME, APP_SWITCH) that are
+     * consumed by the system before reaching interceptKeyBeforeDispatching.
+     * Only active in 3-button navigation mode.
+     */
+    fun handleKeyEventBeforeQueueing(event: KeyEvent, context: Context, param: XC_MethodHook.MethodHookParam, policyFlags: Int): Boolean {
+        val keyCode = event.keyCode
+        val eventTime = event.eventTime
+
+        if (policyFlags and INJECTED_EVENT_FLAG != 0) return false
+
+        if (injectedEventTimes.contains(eventTime)) {
+            injectedEventTimes.remove(eventTime)
+            return false
+        }
+
+        if (!keysEnabled) return false
+
+        if (keyCode !in VIRTUAL_NAV_KEYS) return false
+
+        if (!isThreeButtonNavMode) return false
+
+        if (keyEnabled[keyCode] != true) return false
+
+        if (!hasAnyAction(keyCode)) return false
 
         return when (event.action) {
             KeyEvent.ACTION_DOWN -> handleKeyDown(keyCode, event, context, param)

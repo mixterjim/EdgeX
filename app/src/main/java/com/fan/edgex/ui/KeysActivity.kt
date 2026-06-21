@@ -27,11 +27,14 @@ class KeysActivity : AppCompatActivity() {
     )
 
     companion object {
-        // Only Volume Up, Volume Down and Power keys
+        // Hardware keys + Navigation keys
         val SUPPORTED_KEYS = listOf(
             KeyConfig(KeyEvent.KEYCODE_VOLUME_UP, R.string.key_volume_up, R.drawable.ic_volume_up),
             KeyConfig(KeyEvent.KEYCODE_VOLUME_DOWN, R.string.key_volume_down, R.drawable.ic_volume_down),
-            KeyConfig(KeyEvent.KEYCODE_POWER, R.string.key_power, R.drawable.ic_power)
+            KeyConfig(KeyEvent.KEYCODE_POWER, R.string.key_power, R.drawable.ic_power),
+            KeyConfig(KeyEvent.KEYCODE_BACK, R.string.key_back, R.drawable.ic_arrow_back),
+            KeyConfig(KeyEvent.KEYCODE_HOME, R.string.key_home, R.drawable.ic_home),
+            KeyConfig(KeyEvent.KEYCODE_APP_SWITCH, R.string.key_app_switch, R.drawable.ic_recents)
         )
     }
 
