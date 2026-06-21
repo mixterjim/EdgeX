@@ -46,6 +46,7 @@ class ActionSelectionActivity : AppCompatActivity() {
             code == "clipboard" -> R.drawable.ic_paste
             code == "universal_copy" -> R.drawable.ic_content_copy
             code == "lock_screen" -> R.drawable.ic_power
+            code == "open_menu" -> R.drawable.ic_more_vert
             code == "kill_app" -> R.drawable.ic_kill_app
             code == "prev_app" -> R.drawable.ic_prev_app
             code == "next_app" -> R.drawable.ic_next_app
@@ -124,6 +125,7 @@ class ActionSelectionActivity : AppCompatActivity() {
                 "clipboard" -> R.string.action_clipboard
                 "universal_copy" -> R.string.action_universal_copy
                 "lock_screen" -> R.string.action_lock_screen
+                "open_menu" -> R.string.action_open_menu
                 "kill_app" -> R.string.action_kill_app
                 "prev_app" -> R.string.action_prev_app
                 "next_app" -> R.string.action_next_app
@@ -170,6 +172,7 @@ class ActionSelectionActivity : AppCompatActivity() {
         ActionItem(getString(R.string.action_clipboard), "clipboard", R.drawable.ic_paste),
         ActionItem(getString(R.string.action_universal_copy), "universal_copy", R.drawable.ic_content_copy),
         ActionItem(getString(R.string.action_lock_screen), "lock_screen", R.drawable.ic_power),
+        ActionItem(getString(R.string.action_open_menu), "open_menu", R.drawable.ic_more_vert),
         ActionItem(getString(R.string.action_kill_app), "kill_app", R.drawable.ic_kill_app),
         ActionItem(getString(R.string.action_prev_app), "prev_app", R.drawable.ic_prev_app),
         ActionItem(getString(R.string.action_next_app), "next_app", R.drawable.ic_next_app),

@@ -134,6 +134,7 @@ private val multiStepActions = listOf(
     MultiStepAction("toggle_wifi", R.string.action_toggle_wifi, EdgeXIcons.Wifi),
     MultiStepAction("toggle_mobile_data", R.string.action_toggle_mobile_data, EdgeXIcons.MobileData),
     MultiStepAction("game_mode", R.string.action_game_mode, EdgeXIcons.GameMode),
+    MultiStepAction("open_menu", R.string.action_open_menu, EdgeXIcons.More),
     MultiStepAction("pie", R.string.action_pie, EdgeXIcons.Pie),
     MultiStepAction(AppConfig.CUSTOM_PANEL_ACTION, R.string.action_custom_panel, EdgeXIcons.CustomPanel),
     MultiStepAction(AppConfig.SIDE_BAR_LEFT_ACTION, R.string.action_left_side_bar, EdgeXIcons.SideBarLeft),

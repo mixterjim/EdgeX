@@ -152,6 +152,9 @@ internal class GestureActionDispatcher(
     fun adjustVolume(context: Context, up: Boolean) =
         com.fan.edgex.action.AppActionExecutor.adjustVolume(context, up)
 
+    private fun injectMenuKey(context: Context) =
+        com.fan.edgex.action.AppActionExecutor.injectMenuKey(context)
+
     private fun vibrateActionFeedback(context: Context) {
         if (resolveConfig(AppConfig.HAPTIC_FEEDBACK) != "true") return
         try {
@@ -200,6 +203,9 @@ internal class GestureActionDispatcher(
             }
             action == "lock_screen" -> {
                 GlobalActionHelper.performGlobalAction(context, GlobalActionHelper.GLOBAL_ACTION_LOCK_SCREEN)
+            }
+            action == "open_menu" -> {
+                injectMenuKey(context)
             }
             action == "kill_app" -> {
                 killForegroundApp(context)
@@ -450,6 +456,7 @@ internal class GestureActionDispatcher(
         action == "screenshot"               -> R.drawable.ic_camera
         action == AppConfig.PARTIAL_SCREENSHOT_ACTION -> R.drawable.ic_partial_screenshot
         action == "lock_screen"              -> R.drawable.ic_power
+        action == "open_menu"                -> R.drawable.ic_more_vert
         action == "expand_notifications"     -> R.drawable.ic_notifications
         action == "kill_app"                 -> R.drawable.ic_kill_app
         action == "prev_app"                 -> R.drawable.ic_prev_app
@@ -500,6 +507,7 @@ internal class GestureActionDispatcher(
         action == "screenshot"        -> "Screenshot"
         action == AppConfig.PARTIAL_SCREENSHOT_ACTION -> "Partial SS"
         action == "lock_screen"       -> "Lock"
+        action == "open_menu"         -> "Menu"
         action == "expand_notifications" -> "Notifs"
         action == "kill_app"          -> "Kill App"
         action == "prev_app"          -> "Prev App"
