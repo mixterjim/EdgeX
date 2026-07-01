@@ -374,6 +374,7 @@
     <string name="key_volume_up">音量加</string>
     <string name="key_volume_down">音量减</string>
     <string name="key_power">电源键</string>
+    <string name="key_ai_side">AI 按键</string>
     <string name="key_back">返回键</string>
     <string name="key_home">主页键</string>
     <string name="key_menu">菜单键</string>

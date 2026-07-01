@@ -33,13 +33,17 @@ object KeyManager {
     const val MODE_LONG_PRESS = 2
 
     // Supported keys (keyCode -> config index)
+    // OnePlus AI key (keyCode 780) is a vendor key with no AOSP constant
+    const val KEYCODE_AI_SIDE = 780
+
     val SUPPORTED_KEYS = mapOf(
         KeyEvent.KEYCODE_VOLUME_UP to 0,
         KeyEvent.KEYCODE_VOLUME_DOWN to 1,
         KeyEvent.KEYCODE_POWER to 2,
         KeyEvent.KEYCODE_BACK to 3,
         KeyEvent.KEYCODE_HOME to 4,
-        KeyEvent.KEYCODE_APP_SWITCH to 5
+        KeyEvent.KEYCODE_APP_SWITCH to 5,
+        KEYCODE_AI_SIDE to 6
     )
 
     // State machine states
@@ -302,9 +306,9 @@ object KeyManager {
 
     /**
      * Handle key event from interceptKeyBeforeQueueing hook.
-     * Used for virtual navigation keys (BACK, HOME, APP_SWITCH) that are
-     * consumed by the system before reaching interceptKeyBeforeDispatching.
-     * Only active in 3-button navigation mode.
+     * Used for keys consumed by the system (or OEM classes) before reaching
+     * interceptKeyBeforeDispatching: virtual nav keys (BACK, HOME, APP_SWITCH)
+     * in 3-button mode, and vendor keys like the OnePlus AI key (780).
      */
     fun handleKeyEventBeforeQueueing(event: KeyEvent, context: Context, param: XC_MethodHook.MethodHookParam, policyFlags: Int): Boolean {
         val keyCode = event.keyCode
@@ -319,9 +323,12 @@ object KeyManager {
 
         if (!keysEnabled) return false
 
-        if (keyCode !in VIRTUAL_NAV_KEYS) return false
-
-        if (!isThreeButtonNavMode) return false
+        // Virtual nav keys require 3-button navigation mode;
+        // vendor keys (AI key) are physical and always eligible.
+        val isNavKey = keyCode in VIRTUAL_NAV_KEYS
+        val isVendorEarlyKey = keyCode == KEYCODE_AI_SIDE
+        if (!isNavKey && !isVendorEarlyKey) return false
+        if (isNavKey && !isThreeButtonNavMode) return false
 
         if (keyEnabled[keyCode] != true) return false
 

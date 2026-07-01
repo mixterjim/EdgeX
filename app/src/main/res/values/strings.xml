@@ -461,6 +461,7 @@
     <string name="key_volume_up">Volume Up</string>
     <string name="key_volume_down">Volume Down</string>
     <string name="key_power">Power</string>
+    <string name="key_ai_side">AI Key</string>
     <string name="key_back">Back</string>
     <string name="key_home">Home</string>
     <string name="key_menu">Menu</string>

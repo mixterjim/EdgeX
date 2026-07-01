@@ -32,6 +32,7 @@ object EdgeXIcons {
     @DrawableRes val VolumeUp = R.drawable.ic_volume_up
     @DrawableRes val VolumeDown = R.drawable.ic_volume_down
     @DrawableRes val Power = R.drawable.ic_power
+    @DrawableRes val AiKey = R.drawable.ic_keyboard
     @DrawableRes val Home = R.drawable.ic_home
     @DrawableRes val Recents = R.drawable.ic_recents
     @DrawableRes val Lock = R.drawable.ic_power

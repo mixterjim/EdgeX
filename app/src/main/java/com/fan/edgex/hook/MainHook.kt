@@ -102,10 +102,9 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit {
                 XposedBridge.log("$TAG: interceptKeyBeforeDispatching hook failed: ${t.message}")
             }
 
-            // Hook interceptKeyBeforeQueueing for virtual navigation key interception.
-            // Virtual keys (BACK, HOME, APP_SWITCH) may be consumed by the system at this
-            // stage before reaching interceptKeyBeforeDispatching. Only active in 3-button
-            // navigation mode.
+            // Hook interceptKeyBeforeQueueing for keys consumed before interceptKeyBeforeDispatching.
+            // Virtual nav keys (BACK, HOME, APP_SWITCH) and vendor keys like the OnePlus AI key
+            // (780) are intercepted at this stage by OEM policy classes.
             try {
                 XposedHelpers.findAndHookMethod(
                     inputManagerService, "interceptKeyBeforeQueueing",
@@ -120,7 +119,8 @@ class MainHook : IXposedHookLoadPackage, IXposedHookZygoteInit {
 
                             if (keyCode != KeyEvent.KEYCODE_BACK &&
                                 keyCode != KeyEvent.KEYCODE_HOME &&
-                                keyCode != KeyEvent.KEYCODE_APP_SWITCH) {
+                                keyCode != KeyEvent.KEYCODE_APP_SWITCH &&
+                                keyCode != KeyManager.KEYCODE_AI_SIDE) {
                                 return
                             }
 

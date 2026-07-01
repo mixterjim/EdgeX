@@ -61,6 +61,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.fan.edgex.R
 import com.fan.edgex.config.AppConfig
+import com.fan.edgex.hook.KeyManager
 import com.fan.edgex.config.getConfigBool
 import com.fan.edgex.config.getConfigString
 import com.fan.edgex.config.putConfig
@@ -108,6 +109,7 @@ private val keyItemsHardware = listOf(
     KeyUiItem(KeyEvent.KEYCODE_VOLUME_UP, R.string.key_volume_up, EdgeXIcons.VolumeUp),
     KeyUiItem(KeyEvent.KEYCODE_VOLUME_DOWN, R.string.key_volume_down, EdgeXIcons.VolumeDown),
     KeyUiItem(KeyEvent.KEYCODE_POWER, R.string.key_power, EdgeXIcons.Power),
+    KeyUiItem(KeyManager.KEYCODE_AI_SIDE, R.string.key_ai_side, EdgeXIcons.AiKey),
 )
 
 private val keyItemsNav = listOf(
